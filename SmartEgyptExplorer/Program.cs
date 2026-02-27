@@ -74,6 +74,19 @@ namespace SmartEgyptExplorer
             builder.Services.AddSwaggerGen();
             #endregion
 
+            #region Add CORS policy
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAll",
+                    builder =>
+                    {
+                        builder.AllowAnyOrigin()
+                               .AllowAnyMethod()
+                               .AllowAnyHeader();
+                    });
+            });
+            #endregion
+
             #region JWT Bearer Authentication Middleware
             builder.Services.AddAuthentication(optins =>
             {
@@ -119,6 +132,7 @@ namespace SmartEgyptExplorer
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseRouting();
+            app.UseCors("AllowAll");
             app.UseAuthentication();
             app.UseAuthorization();
             app.MapControllers();
