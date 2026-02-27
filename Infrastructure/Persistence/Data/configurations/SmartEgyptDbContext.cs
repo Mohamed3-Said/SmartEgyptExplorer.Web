@@ -159,12 +159,14 @@ namespace Persistence.Data.configurations
             modelBuilder.Entity<Plan>()
                 .HasMany(p => p.PlanDays)
                 .WithOne(pd => pd.Plan)
-                .HasForeignKey(pd => pd.PlanId);
+                .HasForeignKey(pd => pd.PlanId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<PlanDay>()
                 .HasMany(pd => pd.PlanActivities)
                 .WithOne(pa => pa.PlanDay)
-                .HasForeignKey(pa => pa.PlanDayId);
+                .HasForeignKey(pa => pa.PlanDayId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<PlanActivity>()
                 .HasOne(pa => pa.Place)
@@ -262,6 +264,14 @@ namespace Persistence.Data.configurations
             {
                 entity.Property(e => e.TotalEstimatedCost).HasPrecision(18, 2);
             });
+
+            modelBuilder.Entity<Plan>()
+                 .Property(p => p.TotalPriceEGP)
+                 .HasPrecision(18, 2); 
+
+            modelBuilder.Entity<Attraction>()
+                .Property(a => a.Price)
+                .HasPrecision(18, 2);
             #endregion
 
 

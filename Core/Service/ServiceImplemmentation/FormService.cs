@@ -165,5 +165,11 @@ namespace Service.ServiceImplemmentation
 
             return plan;
         }
+
+        public async Task<bool> DeletePlanAsync(int planId, string userId)
+        {
+
+            return await _planRepository.DeletePlanAsync(planId, userId);
+        }
     }
 }

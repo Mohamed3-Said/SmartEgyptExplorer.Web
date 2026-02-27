@@ -19,12 +19,28 @@ namespace Persistence.Data.Repositories.Repo
             return plan;
         }
 
+
         public async Task<Plan?> GetPlanByIdAsync(int planId)
         {
             return await _context.Plans
                 .Include(p => p.PlanDays)
                 .ThenInclude(d => d.PlanActivities)
                 .FirstOrDefaultAsync(p => p.PlanId == planId);
+        }
+        public async Task<bool> DeletePlanAsync(int planId, string userId)
+        {
+            var plan = await _context.Plans
+                .Include(p => p.PlanDays)
+                .ThenInclude(d => d.PlanActivities)
+                .FirstOrDefaultAsync(p => p.PlanId == planId && p.UserId == userId);
+
+            if (plan == null) return false;
+
+            // EF Core هياخد باله من الـ Cascade Delete لو مضبوط في الـ DB Context
+            // لو مش مضبوط، هتمسح الـ Activities والـ Days الأول
+            _context.Plans.Remove(plan);
+            await _context.SaveChangesAsync();
+            return true;
         }
     }
 }

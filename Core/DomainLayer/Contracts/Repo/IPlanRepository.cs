@@ -12,6 +12,7 @@ namespace DomainLayer.Contracts.Repo
         Task<Plan> CreatePlanAsync(Plan plan);
 
         Task<Plan?> GetPlanByIdAsync(int planId);
+        Task<bool> DeletePlanAsync(int planId, string userId);
     }
 
 }

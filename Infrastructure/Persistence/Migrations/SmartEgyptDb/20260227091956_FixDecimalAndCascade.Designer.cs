@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Persistence.Data.configurations;
 
@@ -11,9 +12,11 @@ using Persistence.Data.configurations;
 namespace Persistence.Migrations.SmartEgyptDb
 {
     [DbContext(typeof(SmartEgyptDbContext))]
-    partial class SmartEgyptDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260227091956_FixDecimalAndCascade")]
+    partial class FixDecimalAndCascade
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

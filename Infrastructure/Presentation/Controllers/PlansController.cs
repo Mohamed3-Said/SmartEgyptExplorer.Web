@@ -40,5 +40,16 @@ namespace SmartEgypt.Controllers
 
             return Ok(plan);
         }
+
+        [HttpDelete("{planId}")]
+        public async Task<IActionResult> DeletePlan(int planId)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (userId == null) return Unauthorized();
+            var isDeleted = await _formService.DeletePlanAsync(planId, userId);
+            if (!isDeleted) return NotFound(new { Message = "Plan not found or you are not authorized." });
+
+            return Ok(new { Message = "Plan deleted successfully!" });
+        }
     }
 }

@@ -12,5 +12,7 @@ namespace ServiceAbstraction.Services
     {
         Task<int> SubmitFormAsync(string userId, IEnumerable<FormAnswerDto> answers);
         Task<PlanDto> GeneratePlanAsync(int submissionId);
+
+        Task<bool> DeletePlanAsync(int planId, string userId);
     }
 }
