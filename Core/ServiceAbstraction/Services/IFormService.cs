@@ -14,5 +14,10 @@ namespace ServiceAbstraction.Services
         Task<PlanDto> GeneratePlanAsync(int submissionId);
 
         Task<bool> DeletePlanAsync(int planId, string userId);
+
+        Task<PlanDto?> GetUserCurrentPlanAsync(string userId);
+        Task<IEnumerable<PlanDto>> GetUserHistoryAsync(string userId);
+        Task<PlanDto?> GetPlanDetailsAsync(int planId, string userId);
+
     }
 }

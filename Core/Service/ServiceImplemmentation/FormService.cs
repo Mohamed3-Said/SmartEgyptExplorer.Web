@@ -171,5 +171,26 @@ namespace Service.ServiceImplemmentation
 
             return await _planRepository.DeletePlanAsync(planId, userId);
         }
+
+        public async Task<PlanDto?> GetUserCurrentPlanAsync(string userId)
+        {
+            var plan = await _planRepository.GetCurrentPlanAsync(userId);
+            if (plan == null) return null;
+
+            // تحويل الـ Plan لـ PlanDto (أنا مفترض إن عندك AutoMapper أو تحويل يدوي)
+            return _mapper.Map<PlanDto>(plan);
+        }
+
+        public async Task<IEnumerable<PlanDto>> GetUserHistoryAsync(string userId)
+        {
+            var plans = await _planRepository.GetUserPlansHistoryAsync(userId);
+            return _mapper.Map<IEnumerable<PlanDto>>(plans);
+        }
+
+        public async Task<PlanDto?> GetPlanDetailsAsync(int planId, string userId)
+        {
+            var plan = await _planRepository.GetPlanByIdAsync(planId, userId);
+            return _mapper.Map<PlanDto>(plan);
+        }
     }
 }

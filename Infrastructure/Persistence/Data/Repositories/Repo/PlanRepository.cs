@@ -42,5 +42,38 @@ namespace Persistence.Data.Repositories.Repo
             await _context.SaveChangesAsync();
             return true;
         }
+
+        public async Task<Plan?> GetCurrentPlanAsync(string userId)
+        {
+            return await _context.Plans
+                .AsNoTracking()
+                .Include(p => p.PlanDays)
+                    .ThenInclude(d => d.PlanActivities)
+                        .ThenInclude(a => a.Place) // عشان نعرض اسم المكان وصورته
+                .Where(p => p.UserId == userId)
+                .OrderByDescending(p => p.CreatedAt) // بنجيب أحدث واحدة
+                .FirstOrDefaultAsync();
+        }
+
+        // 1. قائمة كل الخطط (مختصرة عشان السرعة)
+        public async Task<IEnumerable<Plan>> GetUserPlansHistoryAsync(string userId)
+        {
+            return await _context.Plans
+                .AsNoTracking()
+                .Where(p => p.UserId == userId)
+                .OrderByDescending(p => p.CreatedAt)
+                .ToListAsync();
+        }
+
+        // 2. تفاصيل خطة معينة بالـ ID
+        public async Task<Plan?> GetPlanByIdAsync(int planId, string userId)
+        {
+            return await _context.Plans
+                .AsNoTracking()
+                .Include(p => p.PlanDays)
+                    .ThenInclude(d => d.PlanActivities)
+                        .ThenInclude(a => a.Place)
+                .FirstOrDefaultAsync(p => p.PlanId == planId && p.UserId == userId);
+        }
     }
 }

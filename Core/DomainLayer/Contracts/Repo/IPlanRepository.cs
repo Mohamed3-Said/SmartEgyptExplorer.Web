@@ -13,6 +13,9 @@ namespace DomainLayer.Contracts.Repo
 
         Task<Plan?> GetPlanByIdAsync(int planId);
         Task<bool> DeletePlanAsync(int planId, string userId);
+        Task<Plan?> GetCurrentPlanAsync(string userId);
+        Task<IEnumerable<Plan>> GetUserPlansHistoryAsync(string userId);
+        Task<Plan?> GetPlanByIdAsync(int planId, string userId);
     }
 
 }

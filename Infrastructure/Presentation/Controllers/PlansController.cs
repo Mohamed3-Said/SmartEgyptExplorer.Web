@@ -51,5 +51,44 @@ namespace SmartEgypt.Controllers
 
             return Ok(new { Message = "Plan deleted successfully!" });
         }
+
+        [HttpGet("current")]
+        public async Task<IActionResult> GetCurrentPlan()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (userId == null) return Unauthorized();
+
+            var plan = await _formService.GetUserCurrentPlanAsync(userId);
+
+            if (plan == null)
+                return NotFound(new { Message = "No current plan found for this user." });
+
+            return Ok(plan);
+        }
+
+        // GET: api/plans/history
+        [HttpGet("history")]
+        public async Task<IActionResult> GetHistory()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (userId == null) return Unauthorized();
+
+            var history = await _formService.GetUserHistoryAsync(userId);
+            return Ok(history);
+        }
+
+        // GET: api/plans/10
+        [HttpGet("{planId}")]
+        public async Task<IActionResult> GetPlanDetails(int planId)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (userId == null) return Unauthorized();
+
+            var plan = await _formService.GetPlanDetailsAsync(planId, userId);
+
+            if (plan == null) return NotFound();
+
+            return Ok(plan);
+        }
     }
 }
