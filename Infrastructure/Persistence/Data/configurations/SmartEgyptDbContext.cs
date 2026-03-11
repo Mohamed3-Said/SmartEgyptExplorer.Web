@@ -5,11 +5,12 @@ using DomainLayer.Models.PlaceModule;
 using DomainLayer.Models.PlanModule;
 using DomainLayer.Models.PricingDetailsModule;
 using DomainLayer.Models.Remaining_Modules;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Persistence.Data.configurations
 {
-    public class SmartEgyptDbContext(DbContextOptions<SmartEgyptDbContext> options) : DbContext(options)
+    public class SmartEgyptDbContext(DbContextOptions<SmartEgyptDbContext> options) : IdentityDbContext<AppUser>(options)
     {
         // Core
         public DbSet<Place> Places { get; set; }

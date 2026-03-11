@@ -62,6 +62,8 @@ namespace SmartEgyptExplorer
             builder.Services.AddScoped<FoodEngine>();
             builder.Services.AddScoped<AttractionCsvModel>();
             builder.Services.AddScoped<RecommenderEngine>();
+            builder.Services.AddScoped<IUserRepository, UserRepository>();
+            builder.Services.AddScoped<IUserService, UserService>();
             #endregion
 
             builder.Services.AddDbContext<SmartEgyptDbContext>(options =>

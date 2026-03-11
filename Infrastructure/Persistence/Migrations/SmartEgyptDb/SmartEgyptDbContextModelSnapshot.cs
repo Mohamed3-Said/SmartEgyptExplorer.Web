@@ -121,7 +121,7 @@ namespace Persistence.Migrations.SmartEgyptDb
 
                     b.HasIndex("PlanId");
 
-                    b.ToTable("PlanBudgetItem");
+                    b.ToTable("PlanBudgetItem", (string)null);
                 });
 
             modelBuilder.Entity("DomainLayer.Models.Models.Remaining_Modules.VoiceTranslationMessage", b =>
@@ -163,7 +163,7 @@ namespace Persistence.Migrations.SmartEgyptDb
 
                     b.HasIndex("VoiceTranslationSessionId");
 
-                    b.ToTable("VoiceTranslationMessages");
+                    b.ToTable("VoiceTranslationMessages", (string)null);
                 });
 
             modelBuilder.Entity("DomainLayer.Models.PlaceModule.Attraction", b =>
@@ -190,7 +190,7 @@ namespace Persistence.Migrations.SmartEgyptDb
                     b.HasIndex("PlaceId")
                         .IsUnique();
 
-                    b.ToTable("Attractions");
+                    b.ToTable("Attractions", (string)null);
                 });
 
             modelBuilder.Entity("DomainLayer.Models.PlaceModule.Hotel", b =>
@@ -212,7 +212,7 @@ namespace Persistence.Migrations.SmartEgyptDb
                     b.HasIndex("PlaceId")
                         .IsUnique();
 
-                    b.ToTable("Hotels");
+                    b.ToTable("Hotels", (string)null);
                 });
 
             modelBuilder.Entity("DomainLayer.Models.PlaceModule.Place", b =>
@@ -258,7 +258,7 @@ namespace Persistence.Migrations.SmartEgyptDb
 
                     b.HasKey("PlaceId");
 
-                    b.ToTable("Places");
+                    b.ToTable("Places", (string)null);
                 });
 
             modelBuilder.Entity("DomainLayer.Models.PlaceModule.Restaurant", b =>
@@ -281,7 +281,7 @@ namespace Persistence.Migrations.SmartEgyptDb
                     b.HasIndex("PlaceId")
                         .IsUnique();
 
-                    b.ToTable("Restaurants");
+                    b.ToTable("Restaurants", (string)null);
                 });
 
             modelBuilder.Entity("DomainLayer.Models.PlanModule.Plan", b =>
@@ -332,7 +332,7 @@ namespace Persistence.Migrations.SmartEgyptDb
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Plans");
+                    b.ToTable("Plans", (string)null);
                 });
 
             modelBuilder.Entity("DomainLayer.Models.PlanModule.PlanActivity", b =>
@@ -400,7 +400,7 @@ namespace Persistence.Migrations.SmartEgyptDb
 
                     b.HasIndex("PlanDayId");
 
-                    b.ToTable("PlanActivities");
+                    b.ToTable("PlanActivities", (string)null);
                 });
 
             modelBuilder.Entity("DomainLayer.Models.PlanModule.PlanDay", b =>
@@ -433,7 +433,7 @@ namespace Persistence.Migrations.SmartEgyptDb
 
                     b.HasIndex("PlanId");
 
-                    b.ToTable("PlanDays");
+                    b.ToTable("PlanDays", (string)null);
                 });
 
             modelBuilder.Entity("DomainLayer.Models.PricingDetailsModule.AttractionTicket", b =>
@@ -463,7 +463,7 @@ namespace Persistence.Migrations.SmartEgyptDb
 
                     b.HasIndex("AttractionId");
 
-                    b.ToTable("AttractionTickets");
+                    b.ToTable("AttractionTickets", (string)null);
                 });
 
             modelBuilder.Entity("DomainLayer.Models.PricingDetailsModule.MenuItem", b =>
@@ -492,7 +492,7 @@ namespace Persistence.Migrations.SmartEgyptDb
 
                     b.HasIndex("RestaurantId");
 
-                    b.ToTable("MenuItems");
+                    b.ToTable("MenuItems", (string)null);
                 });
 
             modelBuilder.Entity("DomainLayer.Models.PricingDetailsModule.MenuItemPrice", b =>
@@ -518,7 +518,7 @@ namespace Persistence.Migrations.SmartEgyptDb
 
                     b.HasIndex("MenuItemId");
 
-                    b.ToTable("MenuItemPrices");
+                    b.ToTable("MenuItemPrices", (string)null);
                 });
 
             modelBuilder.Entity("DomainLayer.Models.PricingDetailsModule.RoomPrice", b =>
@@ -544,7 +544,7 @@ namespace Persistence.Migrations.SmartEgyptDb
 
                     b.HasIndex("RoomTypeId");
 
-                    b.ToTable("RoomPrices");
+                    b.ToTable("RoomPrices", (string)null);
                 });
 
             modelBuilder.Entity("DomainLayer.Models.PricingDetailsModule.RoomType", b =>
@@ -569,7 +569,7 @@ namespace Persistence.Migrations.SmartEgyptDb
 
                     b.HasIndex("HotelId");
 
-                    b.ToTable("RoomTypes");
+                    b.ToTable("RoomTypes", (string)null);
                 });
 
             modelBuilder.Entity("DomainLayer.Models.PricingDetailsModule.TransportationOption", b =>
@@ -602,7 +602,7 @@ namespace Persistence.Migrations.SmartEgyptDb
 
                     b.HasIndex("PlaceId");
 
-                    b.ToTable("TransportationOptions");
+                    b.ToTable("TransportationOptions", (string)null);
                 });
 
             modelBuilder.Entity("DomainLayer.Models.Remaining_Modules.AIResult", b =>
@@ -631,7 +631,7 @@ namespace Persistence.Migrations.SmartEgyptDb
 
                     b.HasIndex("UserFormSubmissionId");
 
-                    b.ToTable("AIResults");
+                    b.ToTable("AIResults", (string)null);
                 });
 
             modelBuilder.Entity("DomainLayer.Models.Remaining_Modules.InfoCategory", b =>
@@ -648,7 +648,7 @@ namespace Persistence.Migrations.SmartEgyptDb
 
                     b.HasKey("Id");
 
-                    b.ToTable("InfoCategories");
+                    b.ToTable("InfoCategories", (string)null);
                 });
 
             modelBuilder.Entity("DomainLayer.Models.Remaining_Modules.InfoItem", b =>
@@ -693,7 +693,7 @@ namespace Persistence.Migrations.SmartEgyptDb
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("InfoItems");
+                    b.ToTable("InfoItems", (string)null);
                 });
 
             modelBuilder.Entity("DomainLayer.Models.Remaining_Modules.Review", b =>
@@ -727,7 +727,7 @@ namespace Persistence.Migrations.SmartEgyptDb
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Reviews");
+                    b.ToTable("Reviews", (string)null);
                 });
 
             modelBuilder.Entity("DomainLayer.Models.Remaining_Modules.Ticket", b =>
@@ -772,7 +772,7 @@ namespace Persistence.Migrations.SmartEgyptDb
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Tickets");
+                    b.ToTable("Tickets", (string)null);
                 });
 
             modelBuilder.Entity("DomainLayer.Models.Remaining_Modules.UserAnswer", b =>
@@ -798,7 +798,7 @@ namespace Persistence.Migrations.SmartEgyptDb
 
                     b.HasIndex("UserFormSubmissionId");
 
-                    b.ToTable("UserAnswers");
+                    b.ToTable("UserAnswers", (string)null);
                 });
 
             modelBuilder.Entity("DomainLayer.Models.Remaining_Modules.UserFormSubmission", b =>
@@ -820,7 +820,7 @@ namespace Persistence.Migrations.SmartEgyptDb
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserFormSubmissions");
+                    b.ToTable("UserFormSubmissions", (string)null);
                 });
 
             modelBuilder.Entity("DomainLayer.Models.Remaining_Modules.VoiceTranslationSession", b =>
@@ -851,7 +851,7 @@ namespace Persistence.Migrations.SmartEgyptDb
 
                     b.HasIndex("AppUserId");
 
-                    b.ToTable("VoiceTranslationSessions");
+                    b.ToTable("VoiceTranslationSessions", (string)null);
                 });
 
             modelBuilder.Entity("DomainLayer.Models.Models.PlanModule.PlanBudgetItem", b =>

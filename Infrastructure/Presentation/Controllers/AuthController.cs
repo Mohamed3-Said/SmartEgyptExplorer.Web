@@ -1,9 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ServiceAbstraction;
+using ServiceAbstraction.Services;
 using Shared.DTOS.IdentityModuleDtos;
+using Shared.DTOS.UserProfileDTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -11,7 +14,7 @@ namespace Presentation.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class AuthController(IAuthService _authService) : ControllerBase
+    public class AuthController(IAuthService _authService , IUserService _userService) : ControllerBase
     {
         [HttpPost("Register")]
         public async Task<ActionResult<AuthResponseDto>> RegisterAsync([FromBody] RegisterDto registerDto)
@@ -61,5 +64,36 @@ namespace Presentation.Controllers
             await _authService.ResetPasswordAsync(resetPasswordDto);
             return Ok(new { message = "Password has been reset successfully." });
         }
+
+        //User Profile Endpoints
+        // 1. GET: api/Account/profile
+        [HttpGet("profile")]
+        public async Task<IActionResult> GetProfile()
+        {
+            // سحب الـ ID من الـ Claims الموجودة في الـ Token
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (string.IsNullOrEmpty(userId))
+                return Unauthorized(new { message = "User not found in token" });
+
+            var profile = await _userService.GetProfileAsync(userId);
+
+            if (profile == null)
+                return NotFound(new { message = "Profile not found" });
+
+            return Ok(profile);
+        }
+
+        // 2. PUT: api/Account/profile-update
+        [HttpPut("profile-update")]
+        public async Task<IActionResult> UpdateProfile([FromForm] UpdateProfileDto updateDto)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userId)) return Unauthorized();
+
+            var result = await _userService.UpdateProfileAsync(userId, updateDto);
+            return result ? Ok(new { message = "Profile updated with image!" }) : BadRequest();
+        }
+
     }
 }
