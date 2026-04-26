@@ -1,4 +1,6 @@
 ﻿using DomainLayer.Contracts.Repo;
+using DomainLayer.Models.IdentityModule;
+using Microsoft.AspNetCore.Identity;
 using ServiceAbstraction.Services;
 using Shared.DTOS.APIFormsDTOs;
 using Shared.DTOS.UserProfileDTOs;
@@ -14,10 +16,12 @@ namespace Service.ServiceImplemmentation
     public class UserService : IUserService
     {
         private readonly IUserRepository _userRepo;
+        private readonly UserManager<AppUser> _userManager;
 
-        public UserService(IUserRepository userRepo)
+        public UserService(IUserRepository userRepo , UserManager<AppUser> userManager)
         {
             _userRepo = userRepo;
+            _userManager = userManager;
         }
 
         public async Task<UserProfileDto?> GetProfileAsync(string userId)
@@ -89,6 +93,18 @@ namespace Service.ServiceImplemmentation
             user.PreferredLanguage = updateDto.PreferredLanguage;
 
             return await _userRepo.UpdateProfileAsync(user);
+        }
+
+        public async Task<bool> DeleteProfileAsync(string userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+
+            if (user == null)
+                return false;
+
+            var result = await _userManager.DeleteAsync(user);
+
+            return result.Succeeded;
         }
     }
 }

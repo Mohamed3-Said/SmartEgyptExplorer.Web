@@ -45,7 +45,7 @@ namespace Service
             var Result = await _userManager.CreateAsync(user, registerDto.Password);
             if (Result.Succeeded)
             {
-                var allowedRoles = new[] { "Tourist", "TourGuide" };
+                var allowedRoles = new[] { "Tourist", "TourGuide" , "Admin" };
                 if (!allowedRoles.Contains(registerDto.Role))
                     throw new BadRequestException("Invalid role selected!");
                 // Add role to user

@@ -1,43 +1,29 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.AspNetCore.Http;
 using ServiceAbstraction.Services;
 using Shared.DTOS.APIFormsDTOs;
 using Shared.DTOS.APIFormsDTOs.AIDTOs;
 using System;
 using System.Net.Http;
 using System.Net.Http.Json;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Service.ServiceImplemmentation
 {
     public class AIService : IAIService
     {
-        private readonly HttpClient _httpClient;
+        private readonly HttpClient _plannerClient;
+        private readonly HttpClient _translatorClient;
 
-        public AIService(HttpClient httpClient)
+        public AIService(IHttpClientFactory httpClientFactory)
         {
-            _httpClient = httpClient;
-
-            // غيرنا الـ localhost للينك الـ ngrok بتاع محمود
-            // تأكد إن العنوان ينتهي بـ /
-            _httpClient.BaseAddress = new Uri("https://proliferous-nontypically-michelina.ngrok-free.dev/");
-
-            // نصيحة: زود الـ Timeout هنا عشان الـ AI بياخد وقت
-            _httpClient.Timeout = TimeSpan.FromMinutes(3);
+            _plannerClient = httpClientFactory.CreateClient("AIPlannerClient");
+            _translatorClient = httpClientFactory.CreateClient("AITranslatorClient");
         }
 
-        public async Task<VoiceTranslationResult> TranslateSpeechAsync(VoiceTranslationRequest request)
+        public async Task<AIPlanResponseDto> GeneratePlanAsync(TripRequest travelData)
         {
-            return new VoiceTranslationResult
-            {
-                TranscribedText = "Mock Transcribed Text",
-                TranslatedText = "Mock Translated Text",
-                OutputAudioUrl = "mock-audio.wav"
-            };
-        }
-
-        public async Task<AIPlanResponseDto> GeneratePlanAsync(object travelData)
-        {
-            var response = await _httpClient.PostAsJsonAsync("generate-plan", travelData);
+            var response = await _plannerClient.PostAsJsonAsync("generate-plan", travelData);
 
             if (!response.IsSuccessStatusCode)
             {
@@ -45,8 +31,79 @@ namespace Service.ServiceImplemmentation
                 throw new Exception($"AI Engine Error: {error}");
             }
 
-            // هنا السحر: بنحول الـ JSON لـ DTO فوراً
-            return await response.Content.ReadFromJsonAsync<AIPlanResponseDto>();
+            var options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            };
+
+            var result = await response.Content.ReadFromJsonAsync<AIPlanResponseDto>(options);
+
+            if (result == null)
+                throw new Exception("AI returned null response.");
+
+            return result;
+        }
+
+
+        /// Voice translation :
+        public async Task<bool> HealthCheckAsync()
+        {
+            var response = await _translatorClient.GetAsync("/");
+            return response.IsSuccessStatusCode;
+        }
+
+        public async Task<AITranslationResult> TranslateTextAsync(AITextTranslateRequest request)
+        {
+            var response = await _translatorClient.PostAsJsonAsync("translate/text", request);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                var error = await response.Content.ReadAsStringAsync();
+                throw new Exception($"AI Translation Error: {error}");
+            }
+
+            var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+            var result = await response.Content.ReadFromJsonAsync<AITranslationResult>(options);
+
+            return result ?? throw new Exception("AI returned null.");
+        }
+
+        public async Task<AITranslationResult> TranslateAudioAsync(
+            IFormFile audioFile, string src, string tgt)
+        {
+            using var content = new MultipartFormDataContent();
+            using var stream = audioFile.OpenReadStream();
+            var fileContent = new StreamContent(stream);
+            fileContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue(
+                audioFile.ContentType ?? "audio/wav");
+
+            content.Add(fileContent, "audio_file", audioFile.FileName);
+            content.Add(new StringContent(src), "src");
+            content.Add(new StringContent(tgt), "tgt");
+
+            var response = await _translatorClient.PostAsync("translate/audio", content);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                var error = await response.Content.ReadAsStringAsync();
+                throw new Exception($"AI Audio Translation Error: {error}");
+            }
+
+            var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+            var result = await response.Content.ReadFromJsonAsync<AITranslationResult>(options);
+
+            return result ?? throw new Exception("AI returned null.");
+        }
+
+        public async Task SubmitCorrectionAsync(AICorrectionRequest request)
+        {
+            var response = await _translatorClient.PostAsJsonAsync("translate/correct", request);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                var error = await response.Content.ReadAsStringAsync();
+                throw new Exception($"AI Correction Error: {error}");
+            }
         }
     }
 }

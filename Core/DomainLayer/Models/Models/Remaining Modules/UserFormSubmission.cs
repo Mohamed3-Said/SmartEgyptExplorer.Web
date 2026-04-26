@@ -1,4 +1,5 @@
 ﻿using DomainLayer.Models.IdentityModule;
+using DomainLayer.Models.PlanModule;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,5 +19,9 @@ namespace DomainLayer.Models.Remaining_Modules
         public AppUser User { get; set; } = default!;
         public ICollection<UserAnswer> UserAnswers { get; set; } = new List<UserAnswer>();
         public ICollection<AIResult> AIResults { get; set; } = new List<AIResult>();
+
+        // في ملف UserFormSubmission.cs
+        public ICollection<Plan> Plans { get; set; } = new List<Plan>(); // غير النوع والاسم هنا
+                                                                         // خلي الـ AIResults لو محتاجها لحاجة تانية أو امسحها لو الـ Plan هي البديل
     }
 }

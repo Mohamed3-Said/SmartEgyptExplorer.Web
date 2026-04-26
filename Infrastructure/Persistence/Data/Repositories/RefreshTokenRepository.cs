@@ -12,9 +12,9 @@ namespace Persistence.Data.Repositories
 {
     public class RefreshTokenRepository : IRefreshTokenRepository
     {
-        private readonly SmartIdentityDbContext _context;
+        private readonly SmartEgyptDbContext _context;
 
-        public RefreshTokenRepository(SmartIdentityDbContext context)
+        public RefreshTokenRepository(SmartEgyptDbContext context)
         {
             _context = context;
         }

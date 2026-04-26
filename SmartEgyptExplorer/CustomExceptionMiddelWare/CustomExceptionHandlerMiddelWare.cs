@@ -64,10 +64,17 @@ namespace SmartEgyptExplorer.CustomExceptionMiddelWare
                     break;
                 default:
                     stausecode = StatusCodes.Status500InternalServerError;
+
+                    // بنجيب الرسالة العميقة (Inner Exception) لو موجودة
+                    // لأنها هي اللي فيها سبب الرفض من قاعدة البيانات
+                    var message = ex.InnerException != null
+                                  ? ex.InnerException.Message
+                                  : ex.Message;
+
                     Responseobj = new ErrorToReturn
                     {
                         StatusCode = stausecode,
-                        ErrorMessage = ex.Message
+                        ErrorMessage = message // هنا هتظهر لك المشكلة الحقيقية
                     };
                     break;
 

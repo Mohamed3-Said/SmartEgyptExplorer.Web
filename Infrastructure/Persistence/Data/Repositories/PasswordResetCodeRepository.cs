@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Persistence.Data.Repositories
 {
-    public class PasswordResetCodeRepository(SmartIdentityDbContext _context) : IPasswordResetCodeRepository
+    public class PasswordResetCodeRepository(SmartEgyptDbContext _context) : IPasswordResetCodeRepository
     {
         public async Task AddAsync(PasswordResetCode code)
         {

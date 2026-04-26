@@ -9,29 +9,32 @@ namespace Shared.DTOS.APIFormsDTOs.AIDTOs
 {
     public class AIActivityDto
     {
-        [JsonPropertyName("title")] // اتغيرت من place_name
+        [JsonPropertyName("title")]
         public string Title { get; set; } = string.Empty;
 
-        [JsonPropertyName("description")] // اتغيرت من type
+        [JsonPropertyName("description")]
         public string Description { get; set; } = string.Empty;
 
-        [JsonPropertyName("lat")] // تأكد من وجود دي
+        [JsonPropertyName("lat")]
         public double Lat { get; set; }
 
-        [JsonPropertyName("lng")] // تأكد من وجود دي
+        [JsonPropertyName("lng")]
         public double Lng { get; set; }
 
-        [JsonPropertyName("cost")] // اتغيرت من cost_egp
-        public decimal Cost { get; set; } 
+        [JsonPropertyName("cost")]
+        public decimal Cost { get; set; }
 
-        [JsonPropertyName("startTime")] // اتغيرت من time_str
+        [JsonPropertyName("transport_cost")]
+        public decimal TransportCost { get; set; }
+
+        [JsonPropertyName("startTime")]
         public string StartTime { get; set; } = string.Empty;
-        public string EndTime { get; set; } = "11:00";
 
-        [JsonPropertyName("image_url")] // تأكد إن محمود يبعتها بنفس الاسم ده
+        [JsonPropertyName("image_url")]
         public string? ImageURL { get; set; }
 
-        [JsonPropertyName("transport_cost")] // تأكد إن محمود هيبعتها كدة
-        public decimal TransportCost { get; set; }
+        // FastAPI مش بيبعته — بس موجود في بكك عشان متكسرش الـ mapping
+        [JsonPropertyName("recommendedTransport")]
+        public string? RecommendedTransport { get; set; }
     }
 }

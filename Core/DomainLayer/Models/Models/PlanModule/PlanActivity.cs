@@ -24,11 +24,11 @@ namespace DomainLayer.Models.PlanModule
         public double? Longitude { get; set; }
         public string? MapUrl { get; set; } //optional, in case we want to store a direct link to the location on a map service
 
-        public TimeSpan StartTime { get; set; }
-        public TimeSpan EndTime { get; set; }
+        public string? StartTime { get; set; }
+        public string? EndTime { get; set; }
 
-        public string RecommendedTransport { get; set; } = default!;
-        public string RecommendedFood { get; set; } = default!;
+        public string RecommendedTransport { get; set; } = string.Empty;
+
         public string? ImageURL { get; set; }
         public string Category { get; set; } = string.Empty;
         public PlanDay PlanDay { get; set; } = default!;

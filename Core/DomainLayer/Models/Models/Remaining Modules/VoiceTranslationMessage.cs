@@ -24,6 +24,8 @@ namespace DomainLayer.Models.Models.Remaining_Modules
 
             public DateTime CreatedAt { get; set; }
             public VoiceTranslationSession Session { get; set; } = null!;
+
+            public bool HasAudioOutput { get; set; }
     }
 
 }

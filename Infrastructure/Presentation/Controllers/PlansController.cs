@@ -6,7 +6,7 @@ using System.Security.Claims;
 
 namespace SmartEgypt.Controllers
 {
-    [Authorize] // تأمين الـ Controller عشان مفيش حد غريب يدخله
+    [Authorize] 
     [Route("api/[controller]")]
     [ApiController]
     public class PlansController : ControllerBase
@@ -60,10 +60,11 @@ namespace SmartEgypt.Controllers
 
             var plan = await _formService.GetUserCurrentPlanAsync(userId);
 
-            if (plan == null)
-                return NotFound(new { Message = "No current plan found for this user." });
-
-            return Ok(plan);
+            return Ok(new
+            {
+                hasPlan = plan != null,
+                plan = plan
+            });
         }
 
         // GET: api/plans/history

@@ -63,6 +63,46 @@ namespace Persistence.Data.Repositories.Repo
             _context.VoiceTranslationMessages.Update(message);
             await _context.SaveChangesAsync();
         }
+
+
+        public async Task<IEnumerable<VoiceTranslationMessage>> GetSessionMessagesAsync(int sessionId)
+        {
+            return await _context.VoiceTranslationMessages
+                .Where(m => m.VoiceTranslationSessionId == sessionId)
+                .OrderBy(m => m.CreatedAt)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<VoiceTranslationSession>> GetUserSessionsAsync(string userId)
+        {
+            return await _context.VoiceTranslationSessions
+                .Where(s => s.UserId == userId)
+                .OrderByDescending(s => s.CreatedAt)
+                .ToListAsync();
+        }
+
+        // Delete session and  messages :
+        public async Task DeleteSessionAsync(int sessionId)
+        {
+            var session = await _context.VoiceTranslationSessions.FindAsync(sessionId);
+            if (session != null)
+            {
+                _context.VoiceTranslationSessions.Remove(session);
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        public async Task DeleteMessageAsync(int messageId)
+        {
+            var message = await _context.VoiceTranslationMessages.FindAsync(messageId);
+            if (message != null)
+            {
+                _context.VoiceTranslationMessages.Remove(message);
+                await _context.SaveChangesAsync();
+            }
+        }
+
+
     }
 
 }

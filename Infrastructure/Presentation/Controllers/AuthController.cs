@@ -95,5 +95,20 @@ namespace Presentation.Controllers
             return result ? Ok(new { message = "Profile updated with image!" }) : BadRequest();
         }
 
+        // 3. DELETE: api/Account/profile
+        [HttpDelete("profile")]
+        public async Task<IActionResult> DeleteProfile()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (string.IsNullOrEmpty(userId))
+                return Unauthorized(new { message = "User not found in token" });
+
+            var result = await _userService.DeleteProfileAsync(userId);
+
+            return result
+                ? Ok(new { message = "Profile deleted successfully." })
+                : BadRequest(new { message = "Failed to delete profile." });
+        }
     }
 }

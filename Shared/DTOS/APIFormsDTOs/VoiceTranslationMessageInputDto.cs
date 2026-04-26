@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Shared.DTOS.APIFormsDTOs
 {
-
-    [NotMapped]
     public class VoiceTranslationMessageInputDto
     {
         public int MessageId { get; set; }

@@ -1,5 +1,6 @@
 ﻿using DomainLayer.Models.IdentityModule;
 using DomainLayer.Models.Models.PlanModule;
+using DomainLayer.Models.Remaining_Modules;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,6 +25,7 @@ namespace DomainLayer.Models.PlanModule
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
+        public decimal TotalBudget { get; set; }
         public decimal TotalEstimatedCost { get; set; }
         public string? BudgetStatus { get; set; } // Over Budget / Within Budget
         public decimal TotalPriceEGP { get; set; } 
@@ -34,5 +36,8 @@ namespace DomainLayer.Models.PlanModule
         // Navigation
         public AppUser User { get; set; } = default!;
         public ICollection<PlanDay> PlanDays { get; set; } = new List<PlanDay>();
+        public int? UserFormSubmissionId { get; set; }
+        public UserFormSubmission UserFormSubmission { get; set; } = default!;
+
     }
 }

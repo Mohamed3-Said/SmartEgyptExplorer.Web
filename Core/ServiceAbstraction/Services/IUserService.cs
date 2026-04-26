@@ -12,5 +12,6 @@ namespace ServiceAbstraction.Services
     {
         Task<UserProfileDto?> GetProfileAsync(string userId);
         Task<bool> UpdateProfileAsync(string userId, UpdateProfileDto updateDto);
+        Task<bool> DeleteProfileAsync(string userId);
     }
 }

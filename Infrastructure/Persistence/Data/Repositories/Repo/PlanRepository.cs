@@ -14,18 +14,22 @@ namespace Persistence.Data.Repositories.Repo
     {
         public async Task<Plan> CreatePlanAsync(Plan plan)
         {
-            _context.Plans.Add(plan);   
+            _context.Plans.Add(plan);
             await _context.SaveChangesAsync();
             return plan;
         }
-
-
         public async Task<Plan?> GetPlanByIdAsync(int planId)
         {
             return await _context.Plans
-                .Include(p => p.PlanDays)
-                .ThenInclude(d => d.PlanActivities)
-                .FirstOrDefaultAsync(p => p.PlanId == planId);
+               .Include(p => p.PlanDays)
+                   .ThenInclude(d => d.Hotel)
+                       .ThenInclude(h => h.Place)
+               .Include(p => p.PlanDays)
+                   .ThenInclude(d => d.Meals)
+               .Include(p => p.PlanDays)
+                   .ThenInclude(d => d.PlanActivities)
+               .Include(p => p.BudgetBreakdown)
+               .FirstOrDefaultAsync(p => p.PlanId == planId);
         }
         public async Task<bool> DeletePlanAsync(int planId, string userId)
         {
@@ -48,10 +52,16 @@ namespace Persistence.Data.Repositories.Repo
             return await _context.Plans
                 .AsNoTracking()
                 .Include(p => p.PlanDays)
+                    .ThenInclude(d => d.Hotel)
+                        .ThenInclude(h => h.Place) // 🏨 مهم جدًا
+                .Include(p => p.PlanDays)
+                    .ThenInclude(d => d.Meals) // 🍽️ مهم جدًا
+                .Include(p => p.PlanDays)
                     .ThenInclude(d => d.PlanActivities)
-                        .ThenInclude(a => a.Place) // عشان نعرض اسم المكان وصورته
+                        .ThenInclude(a => a.Place)
+                .Include(p => p.BudgetBreakdown)
                 .Where(p => p.UserId == userId)
-                .OrderByDescending(p => p.CreatedAt) // بنجيب أحدث واحدة
+                .OrderByDescending(p => p.CreatedAt)
                 .FirstOrDefaultAsync();
         }
 
@@ -60,6 +70,11 @@ namespace Persistence.Data.Repositories.Repo
         {
             return await _context.Plans
                 .AsNoTracking()
+                .Include(p => p.BudgetBreakdown)        // ✅ زود ده
+                .Include(p => p.PlanDays)
+                    .ThenInclude(d => d.Meals)
+                .Include(p => p.PlanDays)
+                    .ThenInclude(d => d.PlanActivities)
                 .Where(p => p.UserId == userId)
                 .OrderByDescending(p => p.CreatedAt)
                 .ToListAsync();
@@ -71,8 +86,14 @@ namespace Persistence.Data.Repositories.Repo
             return await _context.Plans
                 .AsNoTracking()
                 .Include(p => p.PlanDays)
+                    .ThenInclude(d => d.Hotel)
+                        .ThenInclude(h => h.Place)
+                .Include(p => p.PlanDays)
+                    .ThenInclude(d => d.Meals)
+                .Include(p => p.PlanDays)
                     .ThenInclude(d => d.PlanActivities)
                         .ThenInclude(a => a.Place)
+                 .Include(p => p.BudgetBreakdown)
                 .FirstOrDefaultAsync(p => p.PlanId == planId && p.UserId == userId);
         }
     }

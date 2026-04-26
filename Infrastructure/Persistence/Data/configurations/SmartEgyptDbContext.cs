@@ -1,4 +1,6 @@
-﻿using DomainLayer.Models.IdentityModule;
+﻿using DomainLayer.DashboardModule;
+using DomainLayer.Models.IdentityModule;
+using DomainLayer.Models.InfoBankModule;
 using DomainLayer.Models.Models.PlanModule;
 using DomainLayer.Models.Models.Remaining_Modules;
 using DomainLayer.Models.PlaceModule;
@@ -46,6 +48,21 @@ namespace Persistence.Data.configurations
         public DbSet<VoiceTranslationSession> VoiceTranslationSessions { get; set; }
         public DbSet<VoiceTranslationMessage> VoiceTranslationMessages { get; set; }
 
+        // NewInfoBanks:
+        public DbSet<AttractionInfo> AttractionInfos { get; set; }
+        public DbSet<AttractionRating> AttractionRatings { get; set; }
+        public DbSet<HotelInfo> HotelInfos { get; set; }
+        public DbSet<RestaurantInfo> RestaurantInfos { get; set; }
+        public DbSet<FoodRecipe> FoodRecipes { get; set; }
+
+        // Dashboard : 
+        public DbSet<DashboardUser> DashboardUsers { get; set; }
+        public DbSet<OwnerService> OwnerServices { get; set; }
+
+        #region Identity Module
+        public DbSet<RefreshToken> RefreshTokens { get; set; } = default!;
+        public DbSet<PasswordResetCode> PasswordResetCodes { get; set; } = default!;
+        #endregion
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -175,6 +192,20 @@ namespace Persistence.Data.configurations
                 .HasForeignKey(pa => pa.PlaceId)
                 .OnDelete(DeleteBehavior.SetNull);
 
+            modelBuilder.Entity<Plan>(entity =>
+            {
+                // الربط مع الـ Submission
+                entity.HasOne(p => p.UserFormSubmission)
+               .WithMany(s => s.Plans) // لازم الاسم ده يطابق اللي في كلاس UserFormSubmission
+               .HasForeignKey(p => p.UserFormSubmissionId)
+               .OnDelete(DeleteBehavior.Restrict);// حل مشكلة الـ Cascade اللي ظهرتلك
+
+                // حل شامل لكل مشاكل الـ Decimal في جدول الـ Plan
+                entity.Property(p => p.TotalPriceEGP).HasPrecision(18, 2);
+                entity.Property(p => p.TotalEstimatedCost).HasPrecision(18, 2);
+                entity.Property(p => p.TotalBudget).HasPrecision(18, 2);
+            });
+
             #endregion
 
             #region 9- InfoBank
@@ -211,7 +242,7 @@ namespace Persistence.Data.configurations
             modelBuilder.Entity<VoiceTranslationSession>()
                .HasMany(v => v.Messages)
                .WithOne(m => m.Session)
-               .HasForeignKey(m => m.VoiceTranslationSessionId) // تعديل اسم الـ FK
+               .HasForeignKey(m => m.VoiceTranslationSessionId) 
                .OnDelete(DeleteBehavior.Cascade);
 
             #endregion
@@ -273,8 +304,39 @@ namespace Persistence.Data.configurations
             modelBuilder.Entity<Attraction>()
                 .Property(a => a.Price)
                 .HasPrecision(18, 2);
+
+            modelBuilder.Entity<PlanMeal>()
+               .Property(p => p.Cost)
+               .HasPrecision(10, 2);
+
+            modelBuilder.Entity<Plan>()
+                .Property(p => p.TotalBudget)
+                .HasPrecision(18, 2);
+
+            // مثال لجدول الـ AttractionInfo
+            modelBuilder.Entity<AttractionInfo>(entity =>
+            {
+                entity.Property(e => e.ForeignerAdultPrice).HasColumnType("decimal(18,2)");
+                entity.Property(e => e.EgyptianAdultPrice).HasColumnType("decimal(18,2)");
+                // كرر ده لكل حقول الـ decimal اللي ظهرت في الـ Log
+            });
+
+            // مثال لجدول الـ Plan (عشان الـ Budget)
+            modelBuilder.Entity<Plan>()
+                .Property(p => p.TotalBudget).HasColumnType("decimal(18,2)");
             #endregion
 
+            #region 14- Dashboard Relationships
+            modelBuilder.Entity<DashboardUser>()
+                .HasMany(u => u.Services)
+                .WithOne(s => s.Owner)
+                .HasForeignKey(s => s.DashboardUserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<DashboardUser>()
+                .HasIndex(u => u.Email)
+                .IsUnique();
+            #endregion
 
         }
 

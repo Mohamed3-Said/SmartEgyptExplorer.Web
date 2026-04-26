@@ -8,14 +8,13 @@ namespace Shared.DTOS.APIFormsDTOs
 {
     public class PlanActivityDto
     {
-        public string Title { get; set; } = string.Empty;
-        public string Description { get; set; } = string.Empty;
+        public string Title { get; set; } = "";
+        public string Description { get; set; } = "";
         public decimal Cost { get; set; }
-        public decimal TransportCost { get; set; }
-        public double Latitude { get; set; }
-        public double Longitude { get; set; }
-        public string RecommendedTransport { get; set; } = string.Empty;
-        // لو حابب تظهر الصورة
-        public string? ImageURL { get; set; }
+        public decimal TransportCost { get; set; }   // ✅ camelCase في الـ output
+        public double Lat { get; set; }
+        public double Lng { get; set; }
+        public string? ImageUrl { get; set; }        // ✅ image_url من FastAPI → ImageUrl للـ output
+        public string? StartTime { get; set; }
     }
 }

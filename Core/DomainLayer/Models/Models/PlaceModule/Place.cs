@@ -26,7 +26,7 @@ namespace DomainLayer.Models.PlaceModule
         public double RatingAvg { get; set; }
         public double Latitude { get; set; }
         public double Longitude { get; set; }
-
+        public string Address { get; set; } = string.Empty;
         // Navigation Properties
         public Hotel? Hotel { get; set; }
         public Restaurant? Restaurant { get; set; }

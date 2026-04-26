@@ -9,19 +9,40 @@ namespace Shared.DTOS.APIFormsDTOs.AIDTOs
 {
     public class AIPlanResponseDto
     {
-        public string Status { get; set; } = string.Empty;
 
         [JsonPropertyName("totalEstimatedCost")] // اتغيرت من total_estimated_cost_egp
         public decimal TotalEstimatedCost { get; set; }
 
-        [JsonPropertyName("actual_spent")]
-        public Dictionary<string, decimal> ActualSpent { get; set; } = new();
-        public string City { get; set; } = default!;
-       // public string BudgetStatus { get; set; } = default!;
-       // public List<BudgetBreakdownDto> BudgetBreakdown { get; set; } = new();
+        [JsonPropertyName("status")]
+        public string Status { get; set; } = string.Empty;
 
-        [JsonPropertyName("recommended_budget")]
-        public Dictionary<string, decimal> RecommendedBudget { get; set; } = new();
+        [JsonPropertyName("city")]
+        public string City { get; set; } = string.Empty;
+
+        [JsonPropertyName("budgetStatus")]
+        public string BudgetStatus { get; set; } = string.Empty;
+        
+         public List<BudgetBreakdownDto> BudgetBreakdown { get; set; } = new();
+         
+        //[JsonPropertyName("actual_spent")]
+        //public Dictionary<string, decimal> ActualSpent { get; set; } = new();
+
+        //[JsonPropertyName("totalBudget")]
+        //public decimal TotalBudget { get; set; }
+
+        // [JsonPropertyName("recommended_budget")]
+        // public Dictionary<string, decimal> RecommendedBudget { get; set; } = new();
+
+
+        [JsonPropertyName("recommendedBudget")]
+        public Dictionary<string, decimal>? RecommendedBudget { get; set; }
+
+        [JsonPropertyName("actualSpent")]
+        public Dictionary<string, decimal>? ActualSpent { get; set; }
+
+        [JsonPropertyName("totalBudget")]
+        public double TotalBudget { get; set; }
+
 
         [JsonPropertyName("days")] // اتغيرت من itinerary
         public List<AIDayDto> Days { get; set; } = new();
