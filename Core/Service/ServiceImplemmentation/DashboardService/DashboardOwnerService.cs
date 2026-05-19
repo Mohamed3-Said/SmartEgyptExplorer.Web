@@ -152,7 +152,14 @@ namespace Service.ServiceImplemmentation.DashboardService
             user.Images = JsonSerializer.Serialize(dto.Images);
             user.HouseRules = JsonSerializer.Serialize(dto.HouseRules);
             user.LanguagesSpoken = JsonSerializer.Serialize(dto.LanguagesSpoken);
-
+            user.MostPopularFacilities = JsonSerializer.Serialize(dto.MostPopularFacilities);
+            user.PopularFacilities = dto.PopularFacilities ?? "{}";
+            user.Availability = JsonSerializer.Serialize(
+                 dto.Availability,
+                 new JsonSerializerOptions
+                 {
+                     Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+                 });
             await _repo.UpdateOwnerAsync(user);
             _csvService.AppendHotel(user);
         }

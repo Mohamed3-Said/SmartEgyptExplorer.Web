@@ -39,6 +39,7 @@ namespace Service.ServiceImplemmentation.DashboardService
                 Name = u.Name,
                 Age = u.Age,
                 Languages = u.Languages,
+                PhoneNumber = u.PhoneNumber,
                 IdStatus = u.IdStatus,
                 PhotoUrl = u.PhotoUrl,
                 CreatedAt = u.CreatedAt
@@ -98,7 +99,10 @@ namespace Service.ServiceImplemmentation.DashboardService
                     IsHidden = u.IsHidden,
                     DocumentUrl = u.DocumentUrl,
                     Name = u.Name,
-                    Languages = u.Languages
+                    Languages = u.Languages,
+                    Age = u.Age,
+                    PhoneNumber = u.PhoneNumber,
+                    PhotoUrl = u.PhotoUrl
                 })
             };
         }

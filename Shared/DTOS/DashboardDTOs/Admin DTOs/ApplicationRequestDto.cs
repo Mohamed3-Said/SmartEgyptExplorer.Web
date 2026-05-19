@@ -23,6 +23,7 @@ namespace Shared.DTOS.DashboardDTOs.Admin_DTOs
         public string? Name { get; set; }
         public int? Age { get; set; }
         public string? Languages { get; set; }
+        public string? PhoneNumber { get; set; }
         public string? IdStatus { get; set; }
         public string? PhotoUrl { get; set; }
         public DateTime CreatedAt { get; set; }

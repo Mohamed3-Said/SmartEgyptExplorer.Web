@@ -160,10 +160,10 @@ namespace Persistence.Data.configurations
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Ticket>()
-                .HasOne(t => t.Place)
-                .WithMany(p => p.Tickets)
-                .HasForeignKey(t => t.PlaceId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .HasOne(t => t.Attraction)
+                .WithMany()
+                .HasForeignKey(t => t.AttractionInfoId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             #endregion
 

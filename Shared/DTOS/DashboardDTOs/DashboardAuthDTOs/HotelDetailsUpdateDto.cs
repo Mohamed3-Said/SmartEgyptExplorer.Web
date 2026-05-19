@@ -18,5 +18,8 @@ namespace Shared.DTOS.DashboardDTOs.DashboardAuthDTOs
         public List<string> Images { get; set; } = new();
         public List<string> HouseRules { get; set; } = new();
         public List<string> Availability { get; set; } = new();
+
+        public List<string> MostPopularFacilities { get; set; } = new();
+        public string? PopularFacilities { get; set; } // JSON string
     }
 }

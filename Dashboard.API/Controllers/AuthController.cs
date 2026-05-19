@@ -52,22 +52,57 @@ namespace Dashboard.API.Controllers
 
         [HttpPost("register/step1")]
         public async Task<IActionResult> RegisterStep1(
-            [FromForm] RegisterStep1Dto dto,
-            IFormFile document)
+    [FromForm] RegisterStep1Dto dto,
+    IFormFile document,
+    IFormFile? photo) 
         {
             if (document == null || document.Length == 0)
                 return BadRequest("Document is required.");
 
+            // =====================
             // حفظ الـ document
-            var uploadsFolder = Path.Combine(_env.WebRootPath, "uploads", "documents");
-            Directory.CreateDirectory(uploadsFolder);
-            var fileName = $"{Guid.NewGuid()}{Path.GetExtension(document.FileName)}";
-            var filePath = Path.Combine(uploadsFolder, fileName);
-            using var stream = new FileStream(filePath, FileMode.Create);
-            await document.CopyToAsync(stream);
-            var documentUrl = $"/uploads/documents/{fileName}";
+            // =====================
+            var docFolder = Path.Combine(_env.WebRootPath, "uploads", "documents");
+            Directory.CreateDirectory(docFolder);
 
-            var result = await _authService.RegisterStep1Async(dto, documentUrl);
+            var docFileName = $"{Guid.NewGuid()}{Path.GetExtension(document.FileName)}";
+            var docPath = Path.Combine(docFolder, docFileName);
+
+            using (var stream = new FileStream(docPath, FileMode.Create))
+            {
+                await document.CopyToAsync(stream);
+            }
+
+            var documentUrl = $"/uploads/documents/{docFileName}";
+
+            // =====================
+            //  حفظ الصور TourGuide)
+            // =====================
+            string? photoUrl = null;
+
+            var normalized = dto.BusinessType.Replace(" ", "");
+
+            if (normalized == "TourGuide" && photo != null && photo.Length > 0)
+            {
+                var photoFolder = Path.Combine(_env.WebRootPath, "uploads", "photos");
+                Directory.CreateDirectory(photoFolder);
+
+                var photoFileName = $"{Guid.NewGuid()}{Path.GetExtension(photo.FileName)}";
+                var photoPath = Path.Combine(photoFolder, photoFileName);
+
+                using (var stream = new FileStream(photoPath, FileMode.Create))
+                {
+                    await photo.CopyToAsync(stream);
+                }
+
+                photoUrl = $"/uploads/photos/{photoFileName}";
+            }
+
+            // =====================
+            //  حفظ في DB
+            // =====================
+            var result = await _authService.RegisterStep1Async(dto, documentUrl, photoUrl);
+
             return Ok(result);
         }
 
@@ -81,8 +116,18 @@ namespace Dashboard.API.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginDto dto)
         {
-            var result = await _authService.LoginAsync(dto);
-            return Ok(result);
+            try
+            {
+                var result = await _authService.LoginAsync(dto);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new
+                {
+                    message = ex.Message
+                });
+            }
         }
 
         [HttpPost("forgot-password")]

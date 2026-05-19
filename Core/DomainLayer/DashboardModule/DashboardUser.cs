@@ -30,6 +30,7 @@ namespace DomainLayer.DashboardModule
         public string? Languages { get; set; }
         public string? PhotoUrl { get; set; }
         public string? IdStatus { get; set; }   // "Exist" | "Not Exist"
+        public string? PhoneNumber { get; set; }
 
         // Status
         public string Status { get; set; } = "Pending"; // "Pending"|"Approved"|"Rejected"
@@ -53,5 +54,10 @@ namespace DomainLayer.DashboardModule
         public bool? MetroAccess { get; set; }
         public string? LanguagesSpoken { get; set; }
         public string? BookingUrl { get; set; }
+        public string? MostPopularFacilities { get; set; }  // JSON array
+        public string? PopularFacilities { get; set; }       // JSON object
+        public string? Availability { get; set; }                                           // في DashboardUser:
+        public int NumberOfReviews { get; set; } = 10;    // ✅
+        public double ReviewScore { get; set; } = 7.5;    // ✅ 
     }
 }

@@ -20,5 +20,8 @@ namespace Shared.DTOS.DashboardDTOs.Admin_DTOs
         public string? DocumentUrl { get; set; }
         public string? Name { get; set; }
         public string? Languages { get; set; }
+        public int? Age { get; set; }
+        public string? PhotoUrl { get; set; }
+        public string? PhoneNumber { get; set; }
     }
 }

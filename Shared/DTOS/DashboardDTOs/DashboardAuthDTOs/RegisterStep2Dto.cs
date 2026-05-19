@@ -17,5 +17,6 @@ namespace Shared.DTOS.DashboardDTOs.DashboardAuthDTOs
         public string? Name { get; set; }
         public int? Age { get; set; }
         public string? Languages { get; set; }
+        public string? PhoneNumber { get; set; }
     }
 }

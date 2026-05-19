@@ -1,17 +1,30 @@
 ﻿using DomainLayer.DashboardModule;
-using System.Text.Json;
+using Microsoft.AspNetCore.Hosting;
 
 public class CsvService
 {
-    private readonly string _restaurantPath =
-        @"D:\DOTNET H7MADA\Graduation Project\Update SEE\SmartEgyptExplorer.Web\SmartEgyptExplorer\wwwroot\csv-data\Egyptian_Restaurants.csv";
+    private readonly string _restaurantPath;
+    private readonly string _hotelPath;
+    public CsvService(IWebHostEnvironment env)
+    {
+        var contentRoot = env.ContentRootPath.TrimEnd('\\', '/');
 
-    private readonly string _hotelPath =
-        @"D:\DOTNET H7MADA\Graduation Project\Update SEE\SmartEgyptExplorer.Web\SmartEgyptExplorer\wwwroot\csv-data\Egypt_Hotels.csv";
+        // لو ContentRootPath بينتهي بـ wwwroot → مش نضيفه تاني
+        string basePath;
+        if (contentRoot.EndsWith("wwwroot", StringComparison.OrdinalIgnoreCase))
+        {
+            basePath = Path.Combine(contentRoot, "csv-data");
+        }
+        else
+        {
+            basePath = Path.Combine(contentRoot, "wwwroot", "csv-data");
+        }
 
-    public CsvService() { }
+        _restaurantPath = Path.Combine(basePath, "Egyptian_Restaurants.csv");
+        _hotelPath = Path.Combine(basePath, "Egypt_Hotels.csv");
+    }
 
-    // ─── Restaurants (مش بنعدل فيه) ───────────────────
+    // ─── Restaurants ───────────────────────────────────
     public void AppendRestaurant(DashboardUser user)
     {
         var line = $"{user.DashboardUserId}," +
@@ -58,11 +71,11 @@ public class CsvService
         // 10. images — JSON array
         var images = Escape(user.Images ?? "[]");
 
-        // 11. number_of_reviews
-        var numReviews = "0";
+        // 11. number_of_reviews ✅ من الـ Entity
+        var numReviews = user.NumberOfReviews.ToString();
 
-        // 12. review_score
-        var reviewScore = "0";
+        // 12. review_score ✅ من الـ Entity
+        var reviewScore = user.ReviewScore.ToString();
 
         // 13. description
         var description = Escape(user.Description ?? "");
@@ -70,46 +83,46 @@ public class CsvService
         // 14. property_highlights
         var highlights = Escape(user.PropertyHighlights ?? "");
 
-        // 15. most_popular_facilities — JSON array
-        var facilities = Escape("[]");
+        // 15. most_popular_facilities ✅ من الـ Entity
+        var mostPopularFacilities = Escape(user.MostPopularFacilities ?? "[]");
 
-        // 16. availability — JSON array
-        var availability = Escape("[]");
+        // 16. availability
+        var availability = Escape(user.Availability ?? "[]");
 
-        // 17. manager_language_spoken — JSON array
+        // 17. manager_language_spoken
         var languages = Escape(user.LanguagesSpoken ?? "[]");
 
-        // 18. popular_facilities — JSON object
-        var popularFacilities = Escape("{}");
+        // 18. popular_facilities ✅ من الـ Entity
+        var popularFacilities = Escape(user.PopularFacilities ?? "{}");
 
-        // 19. house_rules — JSON array
+        // 19. house_rules
         var houseRules = Escape(user.HouseRules ?? "[]");
 
-        // 20. coordinates — JSON object بـ lan و lon
+        // 20. coordinates — lan و lon زي ما هو في الـ CSV
         var coords = Escape($"{{\"lan\":{user.Latitude},\"lon\":{user.Longitude}}}");
 
         var line = string.Join(",", new[]
         {
-            url,          // 1
-            hotelId,      // 2
-            title,        // 3
-            location,     // 4
-            country,      // 5
-            city,         // 6
-            minPrice,     // 7
-            maxPrice,     // 8
-            metro,        // 9
-            images,       // 10
-            numReviews,   // 11
-            reviewScore,  // 12
-            description,  // 13
-            highlights,   // 14
-            facilities,   // 15
-            availability, // 16
-            languages,    // 17
-            popularFacilities, // 18
-            houseRules,   // 19
-            coords        // 20
+            url,                  // 1
+            hotelId,              // 2
+            title,                // 3
+            location,             // 4
+            country,              // 5
+            city,                 // 6
+            minPrice,             // 7
+            maxPrice,             // 8
+            metro,                // 9
+            images,               // 10
+            numReviews,           // 11
+            reviewScore,          // 12
+            description,          // 13
+            highlights,           // 14
+            mostPopularFacilities, // 15
+            availability,         // 16
+            languages,            // 17
+            popularFacilities,    // 18
+            houseRules,           // 19
+            coords                // 20
         });
 
         File.AppendAllText(_hotelPath, line + Environment.NewLine);

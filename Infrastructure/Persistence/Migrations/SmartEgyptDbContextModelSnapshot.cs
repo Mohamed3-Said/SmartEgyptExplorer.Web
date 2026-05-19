@@ -17,7 +17,7 @@ namespace Persistence.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.26")
+                .HasAnnotation("ProductVersion", "8.0.19")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -32,6 +32,9 @@ namespace Persistence.Migrations
 
                     b.Property<int?>("Age")
                         .HasColumnType("int");
+
+                    b.Property<string>("Availability")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("BookingUrl")
                         .HasColumnType("nvarchar(max)");
@@ -100,14 +103,26 @@ namespace Persistence.Migrations
                     b.Property<decimal?>("MinPricePerNight")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<string>("MostPopularFacilities")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("NumberOfReviews")
+                        .HasColumnType("int");
 
                     b.Property<string>("PasswordHash")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("PhotoUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PopularFacilities")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PropertyHighlights")
@@ -118,6 +133,9 @@ namespace Persistence.Migrations
 
                     b.Property<DateTime?>("ResetCodeExpiry")
                         .HasColumnType("datetime2");
+
+                    b.Property<double>("ReviewScore")
+                        .HasColumnType("float");
 
                     b.Property<string>("Role")
                         .IsRequired()
@@ -1339,13 +1357,24 @@ namespace Persistence.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TicketId"));
 
+                    b.Property<int>("AttractionInfoId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("BookingId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("PlaceId")
+                    b.Property<string>("PaymentMethod")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("PlaceId")
                         .HasColumnType("int");
 
                     b.Property<decimal>("Price")
@@ -1359,6 +1388,10 @@ namespace Persistence.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<decimal>("Total")
                         .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
@@ -1368,6 +1401,8 @@ namespace Persistence.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("TicketId");
+
+                    b.HasIndex("AttractionInfoId");
 
                     b.HasIndex("PlaceId");
 
@@ -1860,11 +1895,15 @@ namespace Persistence.Migrations
 
             modelBuilder.Entity("DomainLayer.Models.Remaining_Modules.Ticket", b =>
                 {
-                    b.HasOne("DomainLayer.Models.PlaceModule.Place", "Place")
-                        .WithMany("Tickets")
-                        .HasForeignKey("PlaceId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                    b.HasOne("DomainLayer.Models.InfoBankModule.AttractionInfo", "Attraction")
+                        .WithMany()
+                        .HasForeignKey("AttractionInfoId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.HasOne("DomainLayer.Models.PlaceModule.Place", null)
+                        .WithMany("Tickets")
+                        .HasForeignKey("PlaceId");
 
                     b.HasOne("DomainLayer.Models.IdentityModule.AppUser", "User")
                         .WithMany("Tickets")
@@ -1872,7 +1911,7 @@ namespace Persistence.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("Place");
+                    b.Navigation("Attraction");
 
                     b.Navigation("User");
                 });

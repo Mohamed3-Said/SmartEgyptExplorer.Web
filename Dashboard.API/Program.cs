@@ -23,16 +23,18 @@ builder.Services.AddScoped<IDashboardOwnerService, DashboardOwnerService>();
 builder.Services.AddScoped<IDashboardAdminRepo, DashboardAdminRepo>();
 builder.Services.AddScoped<IDashboardAdminService, DashboardAdminService>();
 // AI Services :
-builder.Services.AddSingleton<CsvService>();
+builder.Services.AddScoped<CsvService>();
 
 // 8. CORS Policy
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll", policy =>
     {
-        policy.AllowAnyOrigin()
-              .AllowAnyMethod()
-              .AllowAnyHeader();
+        policy
+            .AllowAnyOrigin()
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .SetIsOriginAllowed(_ => true);
     });
 });
 

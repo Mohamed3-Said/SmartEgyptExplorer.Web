@@ -44,8 +44,22 @@ namespace Dashboard.API.Controllers
         [HttpPost("applications/{id}/approve")]
         public async Task<IActionResult> Approve(int id)
         {
-            await _adminService.ApproveAsync(id);
-            return Ok(new { message = "Application approved." });
+            try
+            {
+                await _adminService.ApproveAsync(id);
+
+                return Ok(new
+                {
+                    message = "Application approved."
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new
+                {
+                    error = ex.Message
+                });
+            }
         }
 
         [HttpPost("applications/{id}/reject")]

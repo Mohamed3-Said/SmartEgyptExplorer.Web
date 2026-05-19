@@ -9,7 +9,7 @@ namespace ServiceAbstraction.Services.DashboardServices
 {
     public interface IDashboardAuthService
     {
-        Task<RegisterStep1ResponseDto> RegisterStep1Async(RegisterStep1Dto dto, string documentUrl);
+        Task<RegisterStep1ResponseDto> RegisterStep1Async(RegisterStep1Dto dto, string documentUrl, string? photoUrl);
         Task CompleteRegistrationAsync(RegisterStep2Dto dto);
         Task<LoginResponseDto> LoginAsync(LoginDto dto);
         Task ForgotPasswordAsync(string email);

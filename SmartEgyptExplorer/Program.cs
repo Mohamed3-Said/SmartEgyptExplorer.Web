@@ -2,6 +2,7 @@ using DomainLayer.Contracts;
 using DomainLayer.Contracts;
 using DomainLayer.Contracts.Repo;
 using DomainLayer.Contracts.Repo;
+using DomainLayer.Contracts.Repo.IMobileRepo;
 using DomainLayer.Contracts.Repo.InfoBankRepo;
 using DomainLayer.Engines;
 using DomainLayer.Helpers;
@@ -15,14 +16,17 @@ using Persistence.Data.configurations;
 using Persistence.Data.Repositories;
 using Persistence.Data.Repositories.Repo;
 using Persistence.Data.Repositories.Repo.InfoBankRepository;
+using Persistence.Data.Repositories.Repo.MobileRepository;
 using Persistence.Data.Seeders;
 using Service;
 using Service.Profile;
 using Service.ServiceImplementation;
 using Service.ServiceImplemmentation;
 using Service.ServiceImplemmentation.InfoBankService;
+using Service.ServiceImplemmentation.MobileService;
 using ServiceAbstraction;
 using ServiceAbstraction.Services;
+using ServiceAbstraction.Services.IMobileService;
 using ServiceAbstraction.Services.InfoBankIService;
 using SmartEgyptExplorer.CustomExceptionMiddelWare;
 using System.Text;
@@ -81,6 +85,13 @@ namespace SmartEgyptExplorer
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<IFormService, FormService>();
             builder.Services.AddScoped<IVoiceTranslationService, VoiceTranslationService>();
+
+            // Mobile Tour Guide Services :
+            builder.Services.AddScoped<ITourGuideRepo, TourGuideRepo>();
+            builder.Services.AddScoped<ITourGuideService, TourGuideService>();
+            //Booking & Tickets Services :
+            builder.Services.AddScoped<ITicketRepo, TicketRepo>();
+            builder.Services.AddScoped<ITicketService, TicketService>();
             #region AI Service Registration with HttpClient
             // AI Planner
             builder.Services.AddHttpClient("AIPlannerClient", client =>

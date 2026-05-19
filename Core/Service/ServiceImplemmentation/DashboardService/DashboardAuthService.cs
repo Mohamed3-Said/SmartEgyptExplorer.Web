@@ -30,7 +30,7 @@ namespace Service.ServiceImplemmentation.DashboardService
         }
 
         public async Task<RegisterStep1ResponseDto> RegisterStep1Async(
-            RegisterStep1Dto dto, string documentUrl)
+            RegisterStep1Dto dto, string documentUrl, string? photoUrl)
         {
             // تأكد إن الإيميل مش موجود
             var existing = await _repo.GetByEmailAsync(dto.Email);
@@ -45,6 +45,7 @@ namespace Service.ServiceImplemmentation.DashboardService
                 Title = dto.Title,
                 City = dto.City,
                 DocumentUrl = documentUrl,
+                PhotoUrl = photoUrl,
                 Status = "Pending",
                 CreatedAt = DateTime.UtcNow
             };
@@ -69,11 +70,15 @@ namespace Service.ServiceImplemmentation.DashboardService
             user.Latitude = dto.Latitude;
 
             // TourGuide specific
-            if (user.BusinessType == "TourGuide")
+            // 🔥 هنا بقى الحل
+            var normalized = user.BusinessType.Replace(" ", "");
+
+            if (normalized == "TourGuide")
             {
                 user.Name = dto.Name;
                 user.Age = dto.Age;
                 user.Languages = dto.Languages;
+                user.PhoneNumber = dto.PhoneNumber;
             }
 
             await _repo.UpdateAsync(user);
@@ -82,9 +87,23 @@ namespace Service.ServiceImplemmentation.DashboardService
         public async Task<LoginResponseDto> LoginAsync(LoginDto dto)
         {
             var user = await _repo.GetByEmailAsync(dto.Email);
+
             if (user == null || !BCrypt.Net.BCrypt.Verify(dto.Password, user.PasswordHash))
                 throw new Exception("Invalid email or password.");
 
+            // 🔥 Deleted / Hidden
+            if (user.IsHidden)
+                throw new Exception("This account has been deleted.");
+
+            // 🔥 Pending
+            if (user.Status == "Pending")
+                throw new Exception("Your account is still under review.");
+
+            // 🔥 Rejected
+            if (user.Status == "Rejected")
+                throw new Exception("Your application has been rejected.");
+
+            // ✅ Approved 
             var token = GenerateJwt(user);
 
             return new LoginResponseDto
@@ -95,7 +114,6 @@ namespace Service.ServiceImplemmentation.DashboardService
                 Status = user.Status
             };
         }
-
         public async Task ForgotPasswordAsync(string email)
         {
             var user = await _repo.GetByEmailAsync(email);
@@ -124,6 +142,9 @@ namespace Service.ServiceImplemmentation.DashboardService
 
         public async Task ResetPasswordAsync(ResetPasswordDto dto)
         {
+            if (dto.NewPassword != dto.ConfirmPassword)
+                throw new Exception("Passwords do not match.");
+
             var user = await _repo.GetByEmailAsync(dto.Email);
             if (user == null) throw new Exception("User not found.");
 
