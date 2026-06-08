@@ -64,10 +64,17 @@ namespace Service.ServiceImplemmentation.DashboardService
             var user = await _repo.GetByIdAsync(dto.DashboardUserId);
             if (user == null) throw new Exception("User not found.");
 
-            user.Category = dto.Category;
             user.Location = dto.Location;
             user.Longitude = dto.Longitude;
             user.Latitude = dto.Latitude;
+            // ✅ Restaurant specific
+            if (user.BusinessType == "Restaurant")
+            {
+                user.Category = dto.Category;
+                user.RestaurantImageUrl = dto.RestaurantImageUrl;
+                user.MinPrice = dto.MinPrice;
+                user.MaxPrice = dto.MaxPrice;
+            }
 
             // TourGuide specific
             // 🔥 هنا بقى الحل

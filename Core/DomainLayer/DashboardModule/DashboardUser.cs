@@ -59,5 +59,12 @@ namespace DomainLayer.DashboardModule
         public string? Availability { get; set; }                                           // في DashboardUser:
         public int NumberOfReviews { get; set; } = 10;    // ✅
         public double ReviewScore { get; set; } = 7.5;    // ✅ 
+
+
+        //Restaurant: 
+
+        public string? RestaurantImageUrl { get; set; }
+        public decimal? MinPrice { get; set; }
+        public decimal? MaxPrice { get; set; }
     }
 }

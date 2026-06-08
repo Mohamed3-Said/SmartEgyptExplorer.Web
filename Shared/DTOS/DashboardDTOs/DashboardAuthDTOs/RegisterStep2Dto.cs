@@ -18,5 +18,10 @@ namespace Shared.DTOS.DashboardDTOs.DashboardAuthDTOs
         public int? Age { get; set; }
         public string? Languages { get; set; }
         public string? PhoneNumber { get; set; }
+
+        // Restaurant specific
+        public string? RestaurantImageUrl { get; set; }
+        public decimal? MinPrice { get; set; }
+        public decimal? MaxPrice { get; set; }
     }
 }

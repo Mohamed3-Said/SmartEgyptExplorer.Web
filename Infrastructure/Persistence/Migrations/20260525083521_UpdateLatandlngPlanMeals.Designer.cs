@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Persistence.Data.configurations;
 
@@ -11,9 +12,11 @@ using Persistence.Data.configurations;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(SmartEgyptDbContext))]
-    partial class SmartEgyptDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260525083521_UpdateLatandlngPlanMeals")]
+    partial class UpdateLatandlngPlanMeals
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -94,17 +97,11 @@ namespace Persistence.Migrations
                     b.Property<double>("Longitude")
                         .HasColumnType("float");
 
-                    b.Property<decimal?>("MaxPrice")
-                        .HasColumnType("decimal(18,2)");
-
                     b.Property<decimal?>("MaxPricePerNight")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<bool?>("MetroAccess")
                         .HasColumnType("bit");
-
-                    b.Property<decimal?>("MinPrice")
-                        .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal?>("MinPricePerNight")
                         .HasColumnType("decimal(18,2)");
@@ -139,9 +136,6 @@ namespace Persistence.Migrations
 
                     b.Property<DateTime?>("ResetCodeExpiry")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("RestaurantImageUrl")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<double>("ReviewScore")
                         .HasColumnType("float");

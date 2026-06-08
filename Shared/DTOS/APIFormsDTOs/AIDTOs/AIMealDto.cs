@@ -22,5 +22,20 @@ namespace Shared.DTOS.APIFormsDTOs.AIDTOs
 
         [JsonPropertyName("description")]
         public string Description { get; set; } = string.Empty;
+
+        [JsonPropertyName("latitude")]
+        public double? Latitude { get; set; }
+
+        [JsonPropertyName("longitude")]
+        public double? Longitude { get; set; }
+
+        [JsonPropertyName("image_url")]
+        public string? ImageUrl { get; set; }
+
+        [JsonPropertyName("min_price")]
+        public double? MinPrice { get; set; }
+
+        [JsonPropertyName("max_price")]
+        public double? MaxPrice { get; set; }
     }
 }

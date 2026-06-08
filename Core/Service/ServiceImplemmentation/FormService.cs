@@ -77,7 +77,14 @@ namespace Service.ServiceImplemmentation
             var childrenUnder4Str = userAnswers.FirstOrDefault(a => a.QuestionKey == "children_under_4")?.AnswerValue ?? "0";
             var specialNeedsStr = userAnswers.FirstOrDefault(a => a.QuestionKey == "special_needs_count")?.AnswerValue ?? "0";
             var pacing = userAnswers.FirstOrDefault(a => a.QuestionKey == "pacing")?.AnswerValue ?? "Medium";
-            var foodType = userAnswers.FirstOrDefault(a => a.QuestionKey == "food_type")?.AnswerValue ?? "Local";
+            // var foodType = userAnswers.FirstOrDefault(a => a.QuestionKey == "food_type")?.AnswerValue ?? "Local";
+            var foodTypeRaw = userAnswers.FirstOrDefault(a => a.QuestionKey == "food_type")?.AnswerValue ?? "Local";
+
+            var foodType = foodTypeRaw
+                .Split(',')
+                .Select(f => f.Trim())
+                .Where(f => !string.IsNullOrEmpty(f))
+                .ToList();
             var budgetType = userAnswers.FirstOrDefault(a => a.QuestionKey == "budgetType")?.AnswerValue ?? "Total Trip";
             var interTransport = userAnswers.FirstOrDefault(a => a.QuestionKey == "inter_city_transport")?.AnswerValue ?? "Uber";
             var includeFood = userAnswers.FirstOrDefault(a => a.QuestionKey == "include_food")?.AnswerValue == "true";
@@ -234,7 +241,7 @@ namespace Service.ServiceImplemmentation
                     MustTryFoodInstructions = d.MustTryFood?.Instructions,
                     MustTryFoodCategory = d.MustTryFood?.Category,
                     MustTryFoodPriceRange = d.MustTryFood?.PriceRange,
-                    MustTryFoodPriceState = d.MustTryFood?.PriceState  // ✅ زود
+                    MustTryFoodPriceState = d.MustTryFood?.PriceState  // ✅
                 };
 
                 // 🏨 Hotel (AI + fallback)
@@ -243,13 +250,14 @@ namespace Service.ServiceImplemmentation
                 {
                     day.HotelName = d.Hotel.Name;
                     day.HotelPrice = d.Hotel.Price;
-                    // day.HotelImage = d.Hotel.ImageUrl;
                     day.HotelRating = d.Hotel.Rating;
-                    day.HotelLocation = d.Hotel.Location;       // ✅ زود
-                    day.HotelMetroAccess = d.Hotel.MetroAccess; // ✅ زود
-                    day.HotelReviews = d.Hotel.Reviews;         // ✅ زود
+                    day.HotelLocation = d.Hotel.Location;       // ✅ 
+                    day.HotelMetroAccess = d.Hotel.MetroAccess; // ✅ 
+                    day.HotelReviews = d.Hotel.Reviews;         // ✅ 
                     day.HotelRules = d.Hotel.Rules;
-                    day.HotelImage = d.Hotel.ImageUrl;  // ✅ احفظ الـ string كامل في الـ DB
+                    day.HotelImage = d.Hotel.ImageUrl; // ✅ احفظ الـ string كامل في الـ DB
+                    day.HotelLatitude = d.Hotel.Latitude; // ✅
+                    day.HotelLongitude = d.Hotel.Longitude; // ✅
                 }
                 else
                 {
@@ -270,7 +278,13 @@ namespace Service.ServiceImplemmentation
                         Type = m.Type,
                         Name = m.Name,
                         Cost = m.Cost,
-                        Description = m.Description
+                        Description = m.Description,
+                        Latitude = m.Latitude,
+                        Longitude = m.Longitude,
+                        ImageUrl = m.ImageUrl,
+                        MinPrice = m.MinPrice,
+                        MaxPrice = m.MaxPrice
+
                     }).ToList()
                     : GenerateMeals(city);
 
@@ -344,7 +358,9 @@ namespace Service.ServiceImplemmentation
                         Location = day.HotelLocation,
                         MetroAccess = day.HotelMetroAccess ?? "",
                         Reviews = day.HotelReviews ?? 0,
-                        Rules = day.HotelRules ?? ""
+                        Rules = day.HotelRules ?? "",
+                        Latitude = day.HotelLatitude,
+                        Longitude = day.HotelLongitude,
                     } : null,
 
                     MustTryFood = day.MustTryFoodTitle != null ? new FoodDto
@@ -364,7 +380,15 @@ namespace Service.ServiceImplemmentation
                         Type = m.Type,
                         Name = m.Name,
                         Cost = m.Cost,
-                        Description = m.Description
+                        Description = m.Description,
+
+                        Latitude = m.Latitude,
+                        Longitude = m.Longitude,
+
+                        ImageUrl = m.ImageUrl,
+                        MinPrice = m.MinPrice,
+                        MaxPrice = m.MaxPrice
+
                     }).ToList(),
 
                     Activities = day.PlanActivities.Select(a => new PlanActivityDto

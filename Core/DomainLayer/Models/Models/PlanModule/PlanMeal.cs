@@ -17,6 +17,11 @@ namespace DomainLayer.Models.Models.PlanModule
         public string Name { get; set; } = default!;
         public decimal Cost { get; set; }
         public string? Description { get; set; }
+        public double? Latitude { get; set; }
+        public double? Longitude { get; set; }
+        public string? ImageUrl { get; set; }
+        public double? MinPrice { get; set; }
+        public double? MaxPrice { get; set; }
 
         public PlanDay PlanDay { get; set; } = default!;
     }

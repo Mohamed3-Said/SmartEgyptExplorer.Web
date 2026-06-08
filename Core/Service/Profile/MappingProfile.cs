@@ -46,7 +46,9 @@ namespace Service.Profile
                         Location = src.HotelLocation,
                         MetroAccess = src.HotelMetroAccess ?? "",
                         Reviews = src.HotelReviews ?? 0,
-                        Rules = src.HotelRules ?? ""
+                        Rules = src.HotelRules ?? "",
+                        Latitude = src.HotelLatitude,
+                        Longitude = src.HotelLongitude
                     }))
                 .ForMember(dest => dest.MustTryFood, opt => opt.MapFrom(src =>
         src.MustTryFoodTitle == null ? null : new FoodDto
@@ -67,7 +69,16 @@ namespace Service.Profile
                 .ForMember(dest => dest.StartTime, opt => opt.MapFrom(src => src.StartTime))
                 .ForMember(dest => dest.ImageUrl, opt => opt.MapFrom(src => src.ImageURL));
             CreateMap<PlanBudgetItem, BudgetBreakdownDto>();
-            CreateMap<PlanMeal, MealDto>();
+            CreateMap<PlanMeal, MealDto>()
+                .ForMember(dest => dest.Type, opt => opt.MapFrom(src => src.Type))
+                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
+                .ForMember(dest => dest.Cost, opt => opt.MapFrom(src => src.Cost))
+                .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description))
+                .ForMember(dest => dest.Latitude, opt => opt.MapFrom(src => src.Latitude))
+                .ForMember(dest => dest.Longitude, opt => opt.MapFrom(src => src.Longitude))
+                .ForMember(dest => dest.ImageUrl, opt => opt.MapFrom(src => src.ImageUrl))
+                .ForMember(dest => dest.MinPrice, opt => opt.MapFrom(src => src.MinPrice))
+                .ForMember(dest => dest.MaxPrice, opt => opt.MapFrom(src => src.MaxPrice));
 
             #endregion
 

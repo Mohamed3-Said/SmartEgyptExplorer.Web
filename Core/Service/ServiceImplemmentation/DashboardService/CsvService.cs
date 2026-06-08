@@ -33,7 +33,10 @@ public class CsvService
                    $"{Escape(user.City)}," +
                    $"{Escape(user.Location)}," +
                    $"{user.Longitude}," +
-                   $"{user.Latitude}";
+                   $"{user.Latitude}," +
+                   $"{Escape(user.RestaurantImageUrl ?? "")}," + 
+                   $"{user.MinPrice ?? 0}," +              
+                   $"{user.MaxPrice ?? 0}";                
 
         File.AppendAllText(_restaurantPath, line + Environment.NewLine);
     }

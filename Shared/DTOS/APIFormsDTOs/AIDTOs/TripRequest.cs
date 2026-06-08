@@ -24,7 +24,7 @@ namespace Shared.DTOS.APIFormsDTOs.AIDTOs
         public string pacing { get; set; } = "Balanced";
         public List<string> cities_to_visit { get; set; } = new();
         public string inter_city_transport { get; set; } = "Uber";
-        public string food_type { get; set; } = "Local";
+        public List<string> food_type { get; set; } = new();
         public bool show_recipe_details { get; set; } = true;
         public List<string> restrictions { get; set; } = new();
         public bool include_food { get; set; } = true;

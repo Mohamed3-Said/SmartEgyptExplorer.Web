@@ -43,6 +43,8 @@ namespace DomainLayer.Models.PlanModule
         public int? HotelReviews { get; set; }
         public string? HotelRules { get; set; }
         public string? MustTryFoodPriceState { get; set; }
+        public double? HotelLatitude { get; set; }
+        public double? HotelLongitude { get; set; }
 
         // 🆕 Meals
         public ICollection<PlanMeal> Meals { get; set; } = new List<PlanMeal>();
