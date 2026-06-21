@@ -25,4 +25,13 @@
     <Folder Include="wwwroot\uploads\documents\" />
     <Folder Include="wwwroot\uploads\photos\" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="wwwroot\csv-data\Egyptian_Restaurants.csv">
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\csv-data\Egypt_Hotels.csv">
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
 </Project>

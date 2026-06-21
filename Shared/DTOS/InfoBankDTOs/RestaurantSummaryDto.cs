@@ -15,5 +15,8 @@ namespace Shared.DTOS.InfoBankDTOs
         public string? Area { get; set; }
         public double Latitude { get; set; }
         public double Longitude { get; set; }
+        public string? ImageUrl { get; set; }
+        public decimal MinPrice { get; set; }
+        public decimal MaxPrice { get; set; }
     }
 }

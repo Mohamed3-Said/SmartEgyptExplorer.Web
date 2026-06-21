@@ -293,9 +293,10 @@ namespace Service.ServiceImplemmentation
                     .Select(a =>
                     {
                         var parsed = DateTime.TryParse(a.StartTime, out var st);
-
+                        Console.WriteLine($"PlaceId => [{a.PlaceId}]");
                         return new PlanActivity
                         {
+                            AIPlaceId = a.PlaceId,
                             Title = a.Title,
                             Description = a.Description,
                             Cost = a.Cost,
@@ -393,6 +394,7 @@ namespace Service.ServiceImplemmentation
 
                     Activities = day.PlanActivities.Select(a => new PlanActivityDto
                     {
+                        AIPlaceId = a.AIPlaceId,
                         Title = a.Title,
                         Description = a.Description,
                         Cost = a.Cost ?? 0,

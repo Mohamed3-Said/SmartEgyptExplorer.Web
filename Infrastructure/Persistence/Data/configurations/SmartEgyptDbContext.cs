@@ -1,4 +1,5 @@
 ﻿using DomainLayer.DashboardModule;
+using DomainLayer.Models.FeedbackModule;
 using DomainLayer.Models.IdentityModule;
 using DomainLayer.Models.InfoBankModule;
 using DomainLayer.Models.Models.PlanModule;
@@ -58,6 +59,8 @@ namespace Persistence.Data.configurations
         // Dashboard : 
         public DbSet<DashboardUser> DashboardUsers { get; set; }
         public DbSet<OwnerService> OwnerServices { get; set; }
+        // Feedback :
+        public DbSet<UserFeedback> UserFeedbacks { get; set; }
 
         #region Identity Module
         public DbSet<RefreshToken> RefreshTokens { get; set; } = default!;

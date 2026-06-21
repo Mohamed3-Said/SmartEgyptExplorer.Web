@@ -8,6 +8,7 @@ namespace Shared.DTOS.APIFormsDTOs
 {
     public class PlanActivityDto
     {
+        public string? AIPlaceId { get; set; }
         public string Title { get; set; } = "";
         public string Description { get; set; } = "";
         public decimal Cost { get; set; }

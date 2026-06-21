@@ -18,6 +18,8 @@ namespace ServiceAbstraction.Services
         Task<AITranslationResult> TranslateAudioAsync(IFormFile audioFile, string src, string tgt);
         Task SubmitCorrectionAsync(AICorrectionRequest request);
         Task<bool> HealthCheckAsync();
+
+        Task<string> SendFeedbackAsync(string userId, SubmitFeedbackDto dto);
     }
 
 }

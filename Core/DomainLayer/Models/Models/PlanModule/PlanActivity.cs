@@ -12,7 +12,7 @@ namespace DomainLayer.Models.PlanModule
         public int PlanActivityId { get; set; }
         public int PlanDayId { get; set; }
         public int? PlaceId { get; set; }
-
+        public string? AIPlaceId { get; set; } // AI Place ID
         public string Title { get; set; } = default!;
 
         // To The AI :

@@ -67,7 +67,8 @@ namespace Service.Profile
                 .ForMember(dest => dest.Lat, opt => opt.MapFrom(src => src.Latitude ?? 0))
                 .ForMember(dest => dest.Lng, opt => opt.MapFrom(src => src.Longitude ?? 0))
                 .ForMember(dest => dest.StartTime, opt => opt.MapFrom(src => src.StartTime))
-                .ForMember(dest => dest.ImageUrl, opt => opt.MapFrom(src => src.ImageURL));
+                .ForMember(dest => dest.ImageUrl, opt => opt.MapFrom(src => src.ImageURL))
+                .ForMember(dest => dest.AIPlaceId, opt => opt.MapFrom(src => src.AIPlaceId));
             CreateMap<PlanBudgetItem, BudgetBreakdownDto>();
             CreateMap<PlanMeal, MealDto>()
                 .ForMember(dest => dest.Type, opt => opt.MapFrom(src => src.Type))

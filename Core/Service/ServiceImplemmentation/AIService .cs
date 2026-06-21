@@ -14,11 +14,12 @@ namespace Service.ServiceImplemmentation
     {
         private readonly HttpClient _plannerClient;
         private readonly HttpClient _translatorClient;
-
+        private readonly HttpClient _httpClient;
         public AIService(IHttpClientFactory httpClientFactory)
         {
             _plannerClient = httpClientFactory.CreateClient("AIPlannerClient");
             _translatorClient = httpClientFactory.CreateClient("AITranslatorClient");
+            _httpClient = httpClientFactory.CreateClient("AIPlannerClient");
         }
 
         public async Task<AIPlanResponseDto> GeneratePlanAsync(TripRequest travelData)
@@ -104,6 +105,30 @@ namespace Service.ServiceImplemmentation
                 var error = await response.Content.ReadAsStringAsync();
                 throw new Exception($"AI Correction Error: {error}");
             }
+        }
+
+        //Feedback Service :
+        public async Task<string> SendFeedbackAsync(string userId, SubmitFeedbackDto dto)
+        {
+            var payload = new
+            {
+                user_id = userId,
+                feedback = dto.Feedback.Select(f => new
+                {
+                    place_id = f.PlaceId,
+                    rating = f.Rating
+                }).ToList()
+            };
+
+            var response = await _httpClient.PostAsJsonAsync("submit-feedback", payload);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                var error = await response.Content.ReadAsStringAsync();
+                throw new Exception($"AI Feedback Error: {error}");
+            }
+
+            return await response.Content.ReadAsStringAsync();
         }
     }
 }

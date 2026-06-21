@@ -9,6 +9,9 @@ namespace Shared.DTOS.APIFormsDTOs.AIDTOs
 {
     public class AIActivityDto
     {
+        [JsonPropertyName("place_id")]
+        public string PlaceId { get; set; } = string.Empty;
+
         [JsonPropertyName("title")]
         public string Title { get; set; } = string.Empty;
 

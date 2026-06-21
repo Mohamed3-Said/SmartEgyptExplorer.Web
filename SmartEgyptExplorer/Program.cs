@@ -65,6 +65,9 @@ namespace SmartEgyptExplorer
             //Data Seeder
             builder.Services.AddScoped<IDataSeederRepo, DataSeederRepo>();
             builder.Services.AddScoped<IDataSeederService, DataSeederService>();
+            // Feedback Service :
+            builder.Services.AddScoped<IFeedbackService, FeedbackService>();
+            builder.Services.AddScoped<IFeedbackRepository, FeedbackRepository>();
 
             builder.Services.Configure<FormOptions>(options =>
             {
@@ -189,7 +192,12 @@ namespace SmartEgyptExplorer
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new Microsoft.Extensions.FileProviders.PhysicalFileProvider(
+                Path.Combine(builder.Environment.WebRootPath, "csv-data")),
+                RequestPath = "/csv-data"
+            });
             app.UseRouting();
 
             app.UseCors("AllowAll");

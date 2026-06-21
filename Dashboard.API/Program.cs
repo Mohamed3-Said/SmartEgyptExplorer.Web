@@ -69,7 +69,17 @@ app.UseSwagger();
 app.UseSwaggerUI();
 app.UseRouting();
 app.UseCors("AllowAll");
-app.UseStaticFiles(); 
+app.UseStaticFiles();
+var csvPath = Path.Combine(builder.Environment.WebRootPath ?? builder.Environment.ContentRootPath, "csv-data");
+
+if (Directory.Exists(csvPath))
+{
+    app.UseStaticFiles(new StaticFileOptions
+    {
+        FileProvider = new Microsoft.Extensions.FileProviders.PhysicalFileProvider(csvPath),
+        RequestPath = "/csv-data"
+    });
+}
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();

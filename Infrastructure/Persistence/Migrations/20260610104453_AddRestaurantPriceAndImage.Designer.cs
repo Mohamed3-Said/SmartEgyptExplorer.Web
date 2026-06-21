@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Persistence.Data.configurations;
 
@@ -11,13 +12,15 @@ using Persistence.Data.configurations;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(SmartEgyptDbContext))]
-    partial class SmartEgyptDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260610104453_AddRestaurantPriceAndImage")]
+    partial class AddRestaurantPriceAndImage
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.19")
+                .HasAnnotation("ProductVersion", "8.0.26")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -201,33 +204,6 @@ namespace Persistence.Migrations
                     b.HasIndex("DashboardUserId");
 
                     b.ToTable("OwnerServices");
-                });
-
-            modelBuilder.Entity("DomainLayer.Models.FeedbackModule.UserFeedback", b =>
-                {
-                    b.Property<int>("UserFeedbackId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserFeedbackId"));
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("PlaceId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Rating")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("UserFeedbackId");
-
-                    b.ToTable("UserFeedbacks");
                 });
 
             modelBuilder.Entity("DomainLayer.Models.IdentityModule.AppUser", b =>
@@ -977,9 +953,6 @@ namespace Persistence.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PlanActivityId"));
-
-                    b.Property<string>("AIPlaceId")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Category")
                         .IsRequired()

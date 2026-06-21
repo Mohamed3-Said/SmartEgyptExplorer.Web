@@ -276,7 +276,10 @@ namespace Persistence.Data.Seeders
                         City = cols[3].Trim(),
                         Area = cols[4].Trim(),
                         Longitude = double.TryParse(cols[5].Trim(), out var lng) ? lng : 0,
-                        Latitude = double.TryParse(cols[6].Trim(), out var lat) ? lat : 0
+                        Latitude = double.TryParse(cols[6].Trim(), out var lat) ? lat : 0,
+                        ImageUrl = cols.Length > 7 ? cols[7].Trim().Trim('"') : null,
+                        MinPrice = cols.Length > 8 && decimal.TryParse(cols[8].Trim(), out var min) ? min : 0,
+                        MaxPrice = cols.Length > 9 && decimal.TryParse(cols[9].Trim(), out var max) ? max : 0
                     });
                 }
                 catch { continue; }

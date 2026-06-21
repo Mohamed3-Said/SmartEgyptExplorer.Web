@@ -98,7 +98,10 @@ namespace Persistence.Data.Repositories.Repo.DashboardRepository
                     City = user.City ?? "",
                     Area = user.Location ?? "",
                     Latitude = user.Latitude,
-                    Longitude = user.Longitude
+                    Longitude = user.Longitude,
+                    ImageUrl = user.RestaurantImageUrl,   
+                    MinPrice = user.MinPricePerNight ?? 0, 
+                    MaxPrice = user.MaxPricePerNight ?? 0
                 });
                 await _context.SaveChangesAsync();
             }
